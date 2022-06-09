@@ -7,7 +7,7 @@ import {
   Put,
   Delete,
 } from "@nestjs/common";
-import { ApiTags, ApiOperation } from "@nestjs/swagger";
+import { ApiTags } from "@nestjs/swagger";
 
 import { ParseIntPipe } from "../../common/parse-int.pipe";
 import { CreateProductDto, UpdateProductDto } from "../dtos/products.dto";
@@ -24,7 +24,6 @@ export class ProductsController {
   }
 
   @Get()
-  @ApiOperation({ summary: "List all products" })
   get() {
     return this.productsService.findAll();
   }

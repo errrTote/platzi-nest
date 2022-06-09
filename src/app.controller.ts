@@ -20,4 +20,9 @@ export class AppController {
   getLittleNoob() {
     return "I'm a little noob";
   }
+
+  @Get("tasks")
+  getTasks() {
+    return this.appService.getTasks();
+  }
 }

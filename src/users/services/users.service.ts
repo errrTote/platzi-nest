@@ -1,13 +1,15 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable, NotFoundException, Inject } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { User } from "../entities/user.entity";
+import { Client } from "pg";
+
 import { CreateUserDto, UpdateUserDto } from "../dtos/users.dto";
 import { ProductsService } from "src/products/services/products.service";
-import { Order } from "../entities/order.entity";
+import { User } from "../entities/user.entity";
 
 @Injectable()
 export class UsersService {
   constructor(
+    @Inject("PG") private pgClient: Client,
     private productsService: ProductsService,
     private configService: ConfigService,
   ) {}
@@ -16,21 +18,21 @@ export class UsersService {
     {
       id: 1,
       name: "userTestName",
-      lastName: "userTestLastName",
+      last_name: "userTestLast_name",
       email: "userTestEmail@mail.com",
       role: 1,
     },
     {
       id: 2,
       name: "userTestName",
-      lastName: "userTestLastName",
+      last_name: "userTestLast_name",
       email: "userTestEmail@mail.com",
       role: 2,
     },
     {
       id: 3,
       name: "userTestName",
-      lastName: "userTestLastName",
+      last_name: "userTestLast_name",
       email: "userTestEmail@mail.com",
       role: 3,
     },
@@ -84,13 +86,23 @@ export class UsersService {
     };
   }
 
-  getOrdersByUser(id: string): Order {
+  async getOrdersByUser(id: string) {
     const user = this.users.find((item) => item.id === Number(id));
     if (!user) throw new NotFoundException(`User ${id} not found`);
     return {
       date: new Date(),
       user,
-      products: this.productsService.findAll(),
+      products: await this.productsService.findAll(),
     };
+  }
+
+  // Se retorna una promesa para poder pasar valores a partir de un callback (err, res) => ...
+  getTasks() {
+    return new Promise((resolve, reject) => {
+      this.pgClient.query("SELECT * FROM tasks;", (err, res) => {
+        if (err) reject(err);
+        resolve(res.rows);
+      });
+    });
   }
 }

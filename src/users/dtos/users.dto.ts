@@ -11,7 +11,7 @@ export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
   @ApiProperty({ description: "The lastname of the user" })
-  readonly lastName: string;
+  readonly last_name: string;
 
   @IsEmail()
   @IsNotEmpty()

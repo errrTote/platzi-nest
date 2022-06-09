@@ -18,16 +18,6 @@ import { UsersService } from "../services/users.service";
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
-  @Get(":id")
-  getOne(@Param("id", ParseIntPipe) id: string) {
-    return this.usersService.findOne(id);
-  }
-
-  @Get(":id/orders")
-  getOrdersByUser(@Param("id", ParseIntPipe) id: string) {
-    return this.usersService.getOrdersByUser(id);
-  }
-
   @Get()
   get() {
     return this.usersService.findAll();
@@ -49,5 +39,20 @@ export class UsersController {
   @Delete(":id")
   delete(@Param("id", ParseIntPipe) id: string) {
     return this.usersService.delete(id);
+  }
+
+  @Get("tasks")
+  getTasks() {
+    return this.usersService.getTasks();
+  }
+
+  @Get(":id")
+  getOne(@Param("id", ParseIntPipe) id: string) {
+    return this.usersService.findOne(id);
+  }
+
+  @Get(":id/orders")
+  getOrdersByUser(@Param("id", ParseIntPipe) id: string) {
+    return this.usersService.getOrdersByUser(id);
   }
 }
